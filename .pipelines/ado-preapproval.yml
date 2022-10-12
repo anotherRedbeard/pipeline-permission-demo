@@ -37,10 +37,31 @@ stages:
                 write-host ***************************
                 write-host 'Sandbox'
                 write-host ***************************
-- stage: Dev1
+- stage: DevPreApproval
   dependsOn:
   - Sandbox
-  condition: succeeded('Sandbox')
+  jobs:
+  - deployment: PreApproval
+    displayName: PreApproval
+    pool:
+      vmImage: windows-latest
+    environment:
+      name: Dev1
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: PowerShell@2
+            inputs:
+              targetType: 'inline'
+              script: |
+                write-host ***************************
+                write-host 'PreApproval'
+                write-host ***************************
+- stage: Dev1
+  dependsOn:
+  - DevPreApproval
+  condition: succeeded('DevPreApproval')
   jobs:
   - deployment: Dev1
     displayName: Dev1
@@ -61,8 +82,8 @@ stages:
                 write-host ***************************
 - stage: Dev2
   dependsOn:
-  - Sandbox
-  condition: succeeded('Sandbox')
+  - DevPreApproval
+  condition: succeeded('DevPreApproval')
   jobs:
   - deployment: Dev2
     displayName: Dev2
@@ -82,7 +103,7 @@ stages:
                 write-host 'Dev2'
                 write-host ***************************
 - stage: QE
-  dependsOn:
+  dependsOn: ['DevPreApproval']
   condition: or(succeeded('Dev1'), succeeded('Dev2')  )
   jobs:
   - deployment: QE
