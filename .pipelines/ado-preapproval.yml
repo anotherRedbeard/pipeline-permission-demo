@@ -46,7 +46,7 @@ stages:
     pool:
       vmImage: windows-latest
     environment:
-      name: Dev1
+      name: DevPreApproval
     strategy:
       runOnce:
         deploy:
@@ -90,7 +90,7 @@ stages:
     pool:
       vmImage: windows-latest
     environment:
-      name: Dev1
+      name: Dev2
     strategy:
       runOnce:
         deploy:
@@ -103,7 +103,7 @@ stages:
                 write-host 'Dev2'
                 write-host ***************************
 - stage: QE
-  dependsOn: ['DevPreApproval']
+  dependsOn: ['Dev1','Dev2']
   condition: or(succeeded('Dev1'), succeeded('Dev2')  )
   jobs:
   - deployment: QE
