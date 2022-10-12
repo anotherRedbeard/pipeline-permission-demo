@@ -82,9 +82,6 @@ stages:
                 write-host 'Dev2'
                 write-host ***************************
 - stage: QE
-  dependsOn:
-  - Dev1
-  - Dev2
   condition: or(succeeded('Dev1'), succeeded('Dev2')  )
   jobs:
   - deployment: QE
