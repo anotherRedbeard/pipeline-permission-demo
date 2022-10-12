@@ -69,7 +69,7 @@ stages:
     pool:
       vmImage: windows-latest
     environment:
-      name: Dev2
+      name: Dev1
     strategy:
       runOnce:
         deploy:
