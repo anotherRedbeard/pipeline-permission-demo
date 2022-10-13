@@ -67,8 +67,6 @@ stages:
     displayName: Dev1
     pool:
       vmImage: windows-latest
-    environment:
-      name: Dev1
     strategy:
       runOnce:
         deploy:
@@ -90,8 +88,6 @@ stages:
     displayName: Dev2
     pool:
       vmImage: windows-latest
-    environment:
-      name: Dev2
     strategy:
       runOnce:
         deploy:
