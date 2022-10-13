@@ -59,6 +59,7 @@ stages:
                 write-host ***************************
                 write-host 'Dev1'
                 write-host ***************************
+                throw "simulate a failure"
 - stage: Dev2
   dependsOn:
   - Sandbox
@@ -69,7 +70,7 @@ stages:
     pool:
       vmImage: windows-latest
     environment:
-      name: Dev1
+      name: Dev2
     strategy:
       runOnce:
         deploy:
@@ -82,8 +83,8 @@ stages:
                 write-host 'Dev2'
                 write-host ***************************
 - stage: QE
-  dependsOn: []
-  condition: or(succeeded('Dev1'), succeeded('Dev2')  )
+  dependsOn: [Dev1,Dev2]
+  condition: or(succeeded('Dev1'),succeeded('Dev2'))
   jobs:
   - deployment: QE
     displayName: QE
