@@ -80,6 +80,7 @@ stages:
                 write-host ***************************
                 write-host 'Dev1'
                 write-host ***************************
+                throw "simulate Dev1 failing"
 - stage: Dev2
   dependsOn:
   - DevPreApproval
