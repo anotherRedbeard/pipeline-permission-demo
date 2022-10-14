@@ -1,3 +1,12 @@
+
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - .pipelines/ado-permission-demo.yml
+    
 stages:
 - stage: Build
   pool:
