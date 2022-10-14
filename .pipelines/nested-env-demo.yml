@@ -46,11 +46,8 @@ stages:
                 write-host 'Sandbox'
                 write-host ***************************
 - stage: Dev
-  dependsOn:
-  - Sandbox
-  condition: succeeded('Sandbox')
-  jobs:
   - template: dev-template.yml
+  
 - stage: QE
   dependsOn: [Dev1,Dev2]
   condition: or(succeeded('Dev1'),succeeded('Dev2'))
