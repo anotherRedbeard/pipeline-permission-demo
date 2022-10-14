@@ -1,0 +1,45 @@
+- stage: Dev1
+  dependsOn:
+  - Sandbox
+  condition: succeeded('Sandbox')
+  jobs:
+  - deployment: Dev1
+    displayName: Dev1
+    pool:
+      vmImage: windows-latest
+    environment:
+      name: Dev1
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: PowerShell@2
+            inputs:
+              targetType: 'inline'
+              script: |
+                write-host ***************************
+                write-host 'Dev1'
+                write-host ***************************
+                throw "simulate a failure"
+- stage: Dev2
+  dependsOn:
+  - Sandbox
+  condition: succeeded('Sandbox')
+  jobs:
+  - deployment: Dev2
+    displayName: Dev2
+    pool:
+      vmImage: windows-latest
+    environment:
+      name: Dev2
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: PowerShell@2
+            inputs:
+              targetType: 'inline'
+              script: |
+                write-host ***************************
+                write-host 'Dev2'
+                write-host ***************************
