@@ -1,0 +1,106 @@
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - .pipelines/nested-env-demo.yml
+    
+stages:
+- stage: Build
+  pool:
+    vmImage: windows-latest
+  jobs:
+  - job: Build
+    displayName: 'Build FAN5'
+    workspace:
+      clean: all
+    steps:
+    - task: PowerShell@2
+      inputs:
+        targetType: 'inline'
+        script: |
+          write-host ***************************
+          write-host 'Build'
+          write-host ***************************
+- stage: Sandbox
+  dependsOn:
+  - Build
+  condition: succeeded('Build')
+  jobs:
+  - deployment: Sandbox
+    displayName: Sandbox
+    pool:
+      vmImage: windows-latest
+    environment:
+      name: Sandbox
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: PowerShell@2
+            inputs:
+              targetType: 'inline'
+              script: |
+                write-host ***************************
+                write-host 'Sandbox'
+                write-host ***************************
+- stage: Dev
+  dependsOn:
+  - Sandbox
+  condition: succeeded('Sandbox')
+  jobs:
+  - deployment: Dev1
+    displayName: Dev1
+    pool:
+      vmImage: windows-latest
+    environment:
+      name: DevNoApproval
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - template: dev-template.yml
+- stage: QE
+  dependsOn: [Dev1,Dev2]
+  condition: or(succeeded('Dev1'),succeeded('Dev2'))
+  jobs:
+  - deployment: QE
+    displayName: QE
+    pool:
+      vmImage: windows-latest
+    environment:
+      name: QE
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: PowerShell@2
+            inputs:
+              targetType: 'inline'
+              script: |
+                write-host ***************************
+                write-host 'QE'
+                write-host ***************************
+- stage: PE
+  dependsOn:
+  - QE
+  condition: succeeded('QE')
+  jobs:
+  - deployment: PE
+    displayName: PE
+    pool:
+      vmImage: windows-latest
+    environment:
+      name: PE
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: PowerShell@2
+            inputs:
+              targetType: 'inline'
+              script: |-
+                write-host ***************************
+                write-host 'PE'
+                write-host ***************************
