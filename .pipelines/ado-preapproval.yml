@@ -1,3 +1,11 @@
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - .pipelines/ado-preapproval.yml
+    
 stages:
 - stage: Build
   pool:
