@@ -50,17 +50,7 @@ stages:
   - Sandbox
   condition: succeeded('Sandbox')
   jobs:
-  - deployment: Dev1
-    displayName: Dev1
-    pool:
-      vmImage: windows-latest
-    environment:
-      name: DevNoApproval
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - template: dev-template.yml
+  - template: dev-template.yml
 - stage: QE
   dependsOn: [Dev1,Dev2]
   condition: or(succeeded('Dev1'),succeeded('Dev2'))
