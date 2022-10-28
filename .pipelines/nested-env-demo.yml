@@ -19,6 +19,7 @@ stages:
     - template: templates/include-steps.yml
       parameters:
         stepName: 'Build'
+        
 - stage: Sandbox
   dependsOn:
   - Build
@@ -34,13 +35,9 @@ stages:
       runOnce:
         deploy:
           steps:
-          - task: PowerShell@2
-            inputs:
-              targetType: 'inline'
-              script: |
-                write-host ***************************
-                write-host 'Sandbox'
-                write-host ***************************
+          - template: templates/include-steps.yml
+            parameters:
+              stepName: 'Sandbox'
 
 - template: ./templates/dev-template.yml
   
@@ -56,13 +53,10 @@ stages:
       runOnce:
         deploy:
           steps:
-          - task: PowerShell@2
-            inputs:
-              targetType: 'inline'
-              script: |
-                write-host ***************************
-                write-host 'QE'
-                write-host ***************************
+          - template: templates/include-steps.yml
+            parameters:
+              stepName: 'QE'
+          
 - stage: PE
   dependsOn:
   - QE
@@ -78,10 +72,6 @@ stages:
       runOnce:
         deploy:
           steps:
-          - task: PowerShell@2
-            inputs:
-              targetType: 'inline'
-              script: |-
-                write-host ***************************
-                write-host 'PE'
-                write-host ***************************
+          - template: templates/include-steps.yml
+            parameters:
+              stepName: 'PE'
