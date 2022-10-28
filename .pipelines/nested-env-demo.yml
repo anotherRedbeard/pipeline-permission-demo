@@ -11,9 +11,14 @@ stages:
   pool:
     vmImage: windows-latest
   jobs:
-  - template: templates/sample-job-reuse.yml
-    parameters:
-      jobName: 'Build'
+  - job: Build
+    displayName: 'Build'
+    workspace:
+      clean: all
+    steps:
+    - template: templates/include-steps.yml
+      parameters:
+        stepName: 'Build'
         
 - stage: Sandbox
   dependsOn:
