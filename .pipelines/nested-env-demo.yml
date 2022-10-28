@@ -16,7 +16,7 @@ stages:
     workspace:
       clean: all
     steps:
-    - template: templates/steps.yml
+    - template: templates/include-steps.yml
       parameters:
         stepName: 'Build'
 - stage: Sandbox
