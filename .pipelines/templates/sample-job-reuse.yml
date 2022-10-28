@@ -1,0 +1,19 @@
+parameters:
+- name: jobName
+  type: string
+  default: 'jobName'
+  
+jobs:
+- deployment: ${{ parameters.jobName }}
+    displayName: ${{ parameters.jobName }}
+    pool:
+      vmImage: windows-latest
+    environment:
+      name: ${{ parameters.jobName }}
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - template: include-steps.yml
+            parameters:
+              stepName: ${{ parameters.jobName }}
