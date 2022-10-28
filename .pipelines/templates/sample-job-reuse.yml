@@ -5,7 +5,7 @@ parameters:
   
 jobs:
 - deployment: ${{ parameters.jobName }}
-    displayName: Resuable Job Template
+    displayName: 'Resuable Job Template'
     pool:
       vmImage: windows-latest
     environment:
