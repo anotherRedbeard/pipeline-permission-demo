@@ -14,13 +14,13 @@ stages:
       runOnce:
         deploy:
           steps:
+          - template: include-steps.yml
+            parameters:
+              stepName: 'Dev1'
           - task: PowerShell@2
             inputs:
               targetType: 'inline'
               script: |
-                write-host ***************************
-                write-host 'Dev1'
-                write-host ***************************
                 throw "simulate a failure"
                 
 - stage: Dev2
@@ -38,6 +38,9 @@ stages:
       runOnce:
         deploy:
           steps:
+          - template: include-steps.yml
+            parameters:
+              stepName: 'Dev2'
           - task: PowerShell@2
             inputs:
               targetType: 'inline'
