@@ -5,7 +5,7 @@ parameters:
   
 jobs:
 - deployment: ${{ parameters.jobName }}
-    displayName: ${{ parameters.jobName }}
+    displayName: $(jobName)
     pool:
       vmImage: windows-latest
     environment:
