@@ -1,0 +1,14 @@
+# File: templates/include-steps.yml
+parameters:
+- name: stepName
+  type: string
+  default: 'foo'
+
+steps:
+    - task: PowerShell@2
+      inputs:
+        targetType: 'inline'
+        script: |
+          write-host ***************************
+          write-host ${{ parameters.stepName }}
+          write-host ***************************
